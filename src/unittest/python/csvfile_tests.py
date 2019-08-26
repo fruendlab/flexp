@@ -48,8 +48,8 @@ class TestCsvFileValidateColumns(TestCase):
     def setUp(self):
         with mock.patch('os.path.exists') as exists:
             exists.return_value = True
-        self.csv = csvfile.CsvFile('ANY_FILE_NAME',
-                                   ['ANY_COLUMN', 'OTHER_COLUMN'])
+            self.csv = csvfile.CsvFile('ANY_FILE_NAME',
+                                       ['ANY_COLUMN', 'OTHER_COLUMN'])
         self.write_line = mock.patch('flexp.utils.write_line').start()
         logging.disable(logging.CRITICAL)  # We don't want logging in tests
 
