@@ -1,5 +1,6 @@
 from unittest import TestCase
 from unittest import mock
+import logging
 
 from flexp import csvfile
 
@@ -50,6 +51,7 @@ class TestCsvFileValidateColumns(TestCase):
         self.csv = csvfile.CsvFile('ANY_FILE_NAME',
                                    ['ANY_COLUMN', 'OTHER_COLUMN'])
         self.write_line = mock.patch('flexp.utils.write_line').start()
+        logging.disable(logging.CRITICAL)  # We don't want logging in tests
 
     def tearDown(self):
         mock.patch.stopall()
