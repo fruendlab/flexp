@@ -13,8 +13,6 @@ class CsvFile(object):
             filename:
                 name of the file. If the file doesn't exist, it is created,
                 if the file exists, new records are just appended to the end.
-                Note that this may result in corrupted csv files if you change
-                your column names half way through data collection
             column_names:
                 names of columns in the csv file. This is used to create a
                 header on new files and it is used to validate records that you
@@ -22,13 +20,20 @@ class CsvFile(object):
             overwrite:
                 If this is set to true, existing files will be overwritten and
                 new records will not be added at the end.
+
+        Raises:
+            ValueError if referring to an existing csv file with unexpected
+            header
         """
         self.filename = filename
+        self.column_names = column_names
+
         if os.path.exists(self.filename) and overwrite is False:
             logging.info('Appending data to file {}'.format(self.filename))
+            self._validate_header(utils.read_line(self.filename),
+                                  self.column_names)
         else:
             utils.write_line(','.join(column_names) + '\n', self.filename, 'w')
-        self.column_names = column_names
 
     def add_record(self, data):
         """Add a record to the data file
@@ -54,3 +59,8 @@ class CsvFile(object):
                           set(self.column_names) - set(data.keys()))
             return False
         return True
+
+    @staticmethod
+    def _validate_header(header, column_names):
+        if not header.strip('\n').split(',') == column_names:
+            raise ValueError("Column names don't match existing file")
