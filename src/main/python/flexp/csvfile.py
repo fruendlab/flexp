@@ -41,10 +41,12 @@ class CsvFile(object):
             ValueError:
                 if the dictionary keys don't match the columns of the file
         """
+        if not self._validate_columns(data):
             raise ValueError('Invalid column names')
         formatted_data = [str(data[column]) for column in self.column_names]
         utils.write_line(','.join(formatted_data) + '\n', self.filename, 'a')
 
+    def _validate_columns(self, data):
         if not set(data.keys()) == set(self.column_names):
             logging.error('Keys in data but not in csv file:',
                           set(data.keys()) - set(self.column_names))

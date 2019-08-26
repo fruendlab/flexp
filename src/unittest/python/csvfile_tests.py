@@ -58,23 +58,23 @@ class TestCsvFileValidateColumns(TestCase):
 
     def test_ok_if_same_columns(self):
         self.assertTrue(
-            self.csv.validate_columns({'ANY_COLUMN': 'val',
-                                       'OTHER_COLUMN': 'val'}))
+            self.csv._validate_columns({'ANY_COLUMN': 'val',
+                                        'OTHER_COLUMN': 'val'}))
 
     def test_ok_if_same_columns_different_order(self):
         self.assertTrue(
-            self.csv.validate_columns({'OTHER_COLUMN': 'val',
-                                       'ANY_COLUMN': 'val'}))
+            self.csv._validate_columns({'OTHER_COLUMN': 'val',
+                                        'ANY_COLUMN': 'val'}))
 
     def test_fails_if_missing_columns(self):
         self.assertFalse(
-            self.csv.validate_columns({'ANY_COLUMN': 'val'}))
+            self.csv._validate_columns({'ANY_COLUMN': 'val'}))
 
     def test_fails_if_additional_columns(self):
         self.assertFalse(
-            self.csv.validate_columns({'ANY_COLUMN': 'val',
-                                       'OTHER_COLUMN': 'val',
-                                       'WRONG': 'val'}))
+            self.csv._validate_columns({'ANY_COLUMN': 'val',
+                                        'OTHER_COLUMN': 'val',
+                                        'WRONG': 'val'}))
 
 
 class TestCsvFileAddRecord(TestCase):
@@ -85,32 +85,32 @@ class TestCsvFileAddRecord(TestCase):
             self.csv = csvfile.CsvFile('ANY_FILE_NAME',
                                        ['ANY_COLUMN', 'OTHER_COLUMN'])
         self.write_line = mock.patch('flexp.utils.write_line').start()
-        self.csv.validate_columns = mock.patch.object(
+        self.csv._validate_columns = mock.patch.object(
             self.csv,
-            'validate_columns').start()
+            '_validate_columns').start()
 
     def tearDown(self):
         mock.patch.stopall()
 
     def test_writes_to_file(self):
-        self.csv.validate_columns.return_value = True
+        self.csv._validate_columns.return_value = True
         self.csv.add_record({'ANY_COLUMN': 'val', 'OTHER_COLUMN': 'val'})
         self.write_line.assert_called_once_with(
             'val,val\n', self.csv.filename, 'a')
 
     def test_checks_for_invalid_columns(self):
-        self.csv.validate_columns.return_value = True
+        self.csv._validate_columns.return_value = True
         self.csv.add_record({'ANY_COLUMN': 'val', 'OTHER_COLUMN': 'val'})
-        self.csv.validate_columns.assert_called_once_with(
+        self.csv._validate_columns.assert_called_once_with(
             {'ANY_COLUMN': 'val', 'OTHER_COLUMN': 'val'})
 
     def test_fails_for_invalid_columns(self):
-        self.csv.validate_columns.return_value = False
+        self.csv._validate_columns.return_value = False
         with self.assertRaises(ValueError):
             self.csv.add_record({'ANY_COLUMN': 'val', 'OTHER_COLUMN': 'val'})
 
     def test_converts_everything_to_repr(self):
-        self.csv.validate_columns.return_value = True
+        self.csv._validate_columns.return_value = True
         self.csv.add_record({'ANY_COLUMN': 1.0, 'OTHER_COLUMN': None})
         self.write_line.assert_called_once_with(
             '1.0,None\n', self.csv.filename, 'a')
