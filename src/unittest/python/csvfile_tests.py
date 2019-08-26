@@ -123,3 +123,28 @@ class TestCsvFileAddRecord(TestCase):
         self.csv.add_record({'ANY_COLUMN': 1.0, 'OTHER_COLUMN': None})
         self.write_line.assert_called_once_with(
             '1.0,None\n', self.csv.filename, 'a')
+
+
+class TestCsvFileValidateHeader(TestCase):
+
+    def test_match(self):
+        csvfile.CsvFile._validate_header('ANY_COLUMN,OTHER_COLUMN\n',
+                                         ['ANY_COLUMN', 'OTHER_COLUMN'])
+
+    def test_too_many(self):
+        with self.assertRaises(ValueError):
+            csvfile.CsvFile._validate_header(
+                'ANY_COLUMN,OTHER_COLUMN\n',
+                ['ANY_COLUMN', 'OTHER_COLUMN', 'ADDED'])
+
+    def test_too_few(self):
+        with self.assertRaises(ValueError):
+            csvfile.CsvFile._validate_header(
+                'ANY_COLUMN,OTHER_COLUMN\n',
+                ['ANY_COLUMN'])
+
+    def test_different(self):
+        with self.assertRaises(ValueError):
+            csvfile.CsvFile._validate_header(
+                'ANY_COLUMN,OTHER_COLUMN\n',
+                ['ANY_COLUMN', 'SHOULDNT_BE_HERE'])
