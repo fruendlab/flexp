@@ -24,11 +24,12 @@ class CsvFile(object):
                 new records will not be added at the end.
         """
         self.filename = filename
+        self.column_names = column_names
+
         if os.path.exists(self.filename) and overwrite is False:
             logging.info('Appending data to file {}'.format(self.filename))
         else:
             utils.write_line(','.join(column_names) + '\n', self.filename, 'w')
-        self.column_names = column_names
 
     def add_record(self, data):
         """Add a record to the data file
