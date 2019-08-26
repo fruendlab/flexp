@@ -28,6 +28,8 @@ class CsvFile(object):
 
         if os.path.exists(self.filename) and overwrite is False:
             logging.info('Appending data to file {}'.format(self.filename))
+            self._validate_header(utils.read_line(self.filename),
+                                  self.column_names)
         else:
             utils.write_line(','.join(column_names) + '\n', self.filename, 'w')
 
@@ -55,3 +57,8 @@ class CsvFile(object):
                           set(self.column_names) - set(data.keys()))
             return False
         return True
+
+    @staticmethod
+    def _validate_header(header, column_names):
+        if not header.strip('\n').split(',') == column_names:
+            raise ValueError("Column names don't match existing file")
