@@ -26,3 +26,7 @@ class dppWindow(Window):
                                    gamma=gamma,
                                    mode=mode,
                                    checkConfigLevel=1)
+
+    def close(self):
+        self.dpp.mode = "auto++"
+        self.dpp.com.close()
