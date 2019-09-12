@@ -1,7 +1,7 @@
 # Display++ abstraction
 from psychopy.monitors import Monitor
 from psychopy.visual import Window
-from psychopy.hardware.crs.bits import DisplayPlusPlus
+from psychopy.hardware.crs import DisplayPlusPlus
 
 
 class dppWindow(Window):
