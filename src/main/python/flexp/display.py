@@ -19,9 +19,9 @@ class dppWindow(Window):
         kwargs['useFBO'] = True
         kwargs['size'] = (1920, 1080)
         kwargs['monitor'] = self.monitor
-        super(DisplayPlusPlus, self).__init__(**kwargs)
+        super(dppWindow, self).__init__(**kwargs)
 
-        self.dpp = DisplayPlusPlus(self.win,
+        self.dpp = DisplayPlusPlus(self,
                                    portName=portName,
                                    gamma=gamma,
                                    mode=mode,
@@ -30,3 +30,4 @@ class dppWindow(Window):
     def close(self):
         self.dpp.mode = "auto++"
         self.dpp.com.close()
+        super(dppWindow, self).close()
