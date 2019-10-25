@@ -105,7 +105,7 @@ class TestMethods(TestCase):
 
         self.expr.win.flip.assert_called_once_with()
 
-    @mock.patch('psychopy.event.waitKeys')
+    @mock.patch('flexp.experiment.event.waitKeys')
     def test_message_shows_message_and_waits_for_keys(self, waitKeys):
         self.expr.draw_and_flip = mock.MagicMock()
 
