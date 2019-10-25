@@ -3,8 +3,8 @@ python:
 - '3.5'
 - '3.6'
 before_install:
-  - ./.travis/00_set_up_packaging_system.sh
-  - ./.travis/10_install_system_dependencies.sh
+  - bash .travis/00_set_up_packaging_system.sh
+  - bash .travis/10_install_system_dependencies.sh
 install:
 - pip install -U pip
 - pip install pybuilder
