@@ -1,8 +1,9 @@
 from psychopy import visual
 # psychopy.event can't be imported on travis
+from pyglet.canvas.xlib import NoSuchDisplayException
 try:
     from psychopy import event
-except ImportError:
+except NoSuchDisplayException:
     from unittest import mock
     import logging
     logging.error(
