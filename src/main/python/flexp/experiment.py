@@ -49,5 +49,5 @@ class BaseExperiment(object):
         Note that the message will be shown in the experiment's txt object
         """
         self.txt.text = msg
-        self.draw_and_flip(msg)
+        self.draw_and_flip(self.txt)
         event.waitKeys()

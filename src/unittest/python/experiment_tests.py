@@ -65,3 +65,56 @@ class TestInitialization(TestCase):
         expr = BaseExperiment()
         self.mocks['sound'].assert_called_once_with(200, secs=0.2)
         self.assertEqual(expr.beep, self.mocks['sound'].return_value)
+
+
+class TestMethods(TestCase):
+
+    def setUp(self):
+        with mock.patch.multiple('flexp.experiment',
+                                 dppWindow=mock.MagicMock(),
+                                 Sound=mock.MagicMock()):
+            with mock.patch.multiple('psychopy.visual',
+                                     Window=mock.MagicMock(),
+                                     Circle=mock.MagicMock(),
+                                     TextStim=mock.MagicMock()):
+                self.expr = BaseExperiment()
+
+    def test_do_a_trial_is_abstract(self):
+        with self.assertRaises(NotImplementedError):
+            self.expr.do_a_trial()
+
+    def test_feedback_beeps_for_incorrect(self):
+        self.expr.feedback(False)
+        self.expr.beep.play.assert_called_once_with()
+
+    def test_feedback_doesnt_beep_for_correct(self):
+        self.expr.feedback(True)
+        self.expr.beep.play.assert_not_called()
+
+    def test_draw_and_flip_draws_every_object_before_flipping(self):
+        obj1 = mock.Mock()
+        obj2 = mock.Mock()
+
+        def check_called():
+            obj1.draw.assert_called_once_with()
+            obj2.draw.assert_called_once_with()
+
+        self.expr.win.flip.side_effect = check_called
+
+        self.expr.draw_and_flip(obj1, obj2)
+
+        self.expr.win.flip.assert_called_once_with()
+
+    @mock.patch('psychopy.event.waitKeys')
+    def test_message_shows_message_and_waits_for_keys(self, waitKeys):
+        self.expr.draw_and_flip = mock.MagicMock()
+
+        def check_called():
+            self.assertEqual(self.expr.txt.text, 'ANY_MESSAGE')
+            self.expr.draw_and_flip.assert_called_once_with(self.expr.txt)
+
+        waitKeys.side_effect = check_called
+
+        self.expr.message('ANY_MESSAGE')
+
+        waitKeys.assert_called_once_with()
