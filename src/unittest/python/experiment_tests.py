@@ -8,10 +8,10 @@ class TestInitialization(TestCase):
 
     def setUp(self):
         self.patches = {
-            'window': mock.patch('psychopy.visual.Window'),
+            'window': mock.patch('flexp.experiment.visual.Window'),
             'dpp': mock.patch('flexp.experiment.dppWindow'),
-            'circle': mock.patch('psychopy.visual.Circle'),
-            'textstim': mock.patch('psychopy.visual.TextStim'),
+            'circle': mock.patch('flexp.experiment.visual.Circle'),
+            'textstim': mock.patch('flexp.experiment.visual.TextStim'),
             'sound': mock.patch('flexp.experiment.Sound'),
         }
 
@@ -73,7 +73,7 @@ class TestMethods(TestCase):
         with mock.patch.multiple('flexp.experiment',
                                  dppWindow=mock.MagicMock(),
                                  Sound=mock.MagicMock()):
-            with mock.patch.multiple('psychopy.visual',
+            with mock.patch.multiple('flexp.experiment.visual',
                                      Window=mock.MagicMock(),
                                      Circle=mock.MagicMock(),
                                      TextStim=mock.MagicMock()):
