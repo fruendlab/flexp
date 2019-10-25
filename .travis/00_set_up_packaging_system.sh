@@ -4,7 +4,7 @@
 # and display each line as it gets executed.
 set -ev
 
-source ./travis/travis_retry.bash
+source ./.travis/travis_retry.bash
 
 travis_retry sudo apt-get update -qq
 travis_retry sudo apt-get install -qq lsb-release
