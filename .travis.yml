@@ -1,7 +1,11 @@
+dist: trusty
+sudo: true
 language: python
 python:
-- '3.5'
 - '3.6'
+before_install:
+  - bash .travis/00_set_up_packaging_system.sh
+  - bash .travis/10_install_system_dependencies.sh
 install:
 - pip install -U pip
 - pip install pybuilder
