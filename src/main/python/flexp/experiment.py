@@ -1,4 +1,13 @@
-from psychopy import visual, event
+from psychopy import visual
+# psychopy.event can't be imported on travis
+try:
+    from psychopy import event
+except ImportError:
+    from unittest import mock
+    import logging
+    logging.error(
+        'Could not import psychopy.event, no keyboard events possible')
+    event = mock.MagicMock()
 from psychopy.sound.backend_pygame import SoundPygame as Sound
 
 from .display import dppWindow
