@@ -49,3 +49,19 @@ class TestInitialization(TestCase):
                 self.mocks[key].assert_called_once_with(
                     winType='ANY_WINTYPE',
                     any_keyword='ANY_VALUE')
+
+    def test_creates_fixation_point_of_size_1pix(self):
+        expr = BaseExperiment()
+        self.mocks['circle'].assert_called_once_with(
+            expr.win, size=1, units='pix')
+        self.assertEqual(expr.fixation, self.mocks['circle'].return_value)
+
+    def test_creates_text_element(self):
+        expr = BaseExperiment()
+        self.mocks['textstim'].assert_called_once_with(expr.win)
+        self.assertEqual(expr.txt, self.mocks['textstim'].return_value)
+
+    def test_creates_sound(self):
+        expr = BaseExperiment()
+        self.mocks['sound'].assert_called_once_with(200, secs=0.2)
+        self.assertEqual(expr.beep, self.mocks['sound'].return_value)
