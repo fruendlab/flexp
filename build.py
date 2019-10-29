@@ -20,4 +20,5 @@ def set_properties(project):
     project.depends_on('pyglet==1.3')
     project.depends_on('pygame')
     project.set_property('coverage_exceptions', ['flexp.utils',
+                                                 'flexp.experiment',
                                                  'flexp.display'])
