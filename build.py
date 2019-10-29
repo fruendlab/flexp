@@ -11,7 +11,7 @@ use_plugin("python.distutils")
 
 name = "flexp"
 default_task = "publish"
-version = count_travis()
+version = "2019-{}".format(count_travis())
 
 
 @init
