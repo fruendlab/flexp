@@ -1,9 +1,8 @@
 from psychopy import visual
 from psychopy import event
+from psychopy.sound.backend_pygame import SoundPygame as Sound
 
 from .display import dppWindow
-
-from psychopy.sound.backend_pygame import SoundPygame as Sound
 
 
 class BaseExperiment(object):
