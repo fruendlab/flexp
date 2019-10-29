@@ -1,18 +1,8 @@
-from pyglet.canvas.xlib import NoSuchDisplayException
-try:
-    # psychopy can't be imported on travis
-    from psychopy import visual  # Raises NoSuchDisplayException on travis
-    from psychopy import event
+# psychopy can't be imported on travis
+from psychopy import visual  # Raises NoSuchDisplayException on travis
+from psychopy import event
 
-    from .display import dppWindow
-except NoSuchDisplayException:
-    from unittest import mock
-    import logging
-    logging.error(
-        'Could not import psychopy')
-    event = mock.MagicMock()
-    visual = mock.MagicMock()
-    dppWindow = mock.MagicMock()
+from .display import dppWindow
 
 from psychopy.sound.backend_pygame import SoundPygame as Sound
 
