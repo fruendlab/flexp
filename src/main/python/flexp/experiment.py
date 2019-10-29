@@ -1,5 +1,4 @@
-# psychopy can't be imported on travis
-from psychopy import visual  # Raises NoSuchDisplayException on travis
+from psychopy import visual
 from psychopy import event
 
 from .display import dppWindow
